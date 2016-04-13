@@ -1,89 +1,48 @@
--- Two dashes start a one-line comment.
-
---[[
-     Adding two ['s and ]'s makes it a
-     multi-line comment.
---]]
-
-----------------------------------------------------
--- 1. Variables and flow control.
-----------------------------------------------------
-
-num = 42  -- All numbers are doubles.
--- Don't freak out, 64-bit doubles have 52 bits for
--- storing exact int values; machine precision is
--- not a problem for ints that need < 52 bits.
-
-s = 'walternate'  -- Immutable strings like Python.
-t = "double-quotes are also fine"
-u = [[ Double brackets
-       start and end
-       multi-line strings.]]
-t = nil  -- Undefines t; Lua has garbage collection.
-
--- Blocks are denoted with keywords like do/end:
-while num < 50 do
-  num = num + 1  -- No ++ or += type operators.
-end
-
--- If clauses:
-if num > 40 then
-  print('over 40')
-elseif s ~= 'walternate' then  -- ~= is not equals.
-  -- Equality check is == like Python; ok for strs.
-  io.write('not over 40\n')  -- Defaults to stdout.
-else
-  -- Variables are global by default.
-  thisIsGlobal = 5  -- Camel case is common.
-
-  -- How to make a variable local:
-  local line = io.read()  -- Reads next stdin line.
-
-  -- String concatenation uses the .. operator:
-  print('Winter is coming, ' .. line)
-end
-
--- Undefined variables return nil.
--- This is not an error:
-foo = anUnknownVariable  -- Now foo = nil.
-
-aBoolValue = false
-
--- Only nil and false are falsy; 0 and '' are true!
-if not aBoolValue then print('twas false') end
-
--- 'or' and 'and' are short-circuited.
--- This is similar to the a?b:c operator in C/js:
-ans = aBoolValue and 'yes' or 'no'  --> 'no'
-
-karlSum = 0
-for i = 1, 100 do  -- The range includes both ends.
-  karlSum = karlSum + i
-end
-
--- Use "100, 1, -1" as the range to count down:
-fredSum = 0
-for j = 100, 1, -1 do fredSum = fredSum + j end
-
--- In general, the range is begin, end[, step].
-
--- Another loop construct:
-repeat
-  print('the way of the future')
-  num = num - 1
-until num == 0
+-- an scratch
 
 
-----------------------------------------------------
--- 2. Functions.
-----------------------------------------------------
+a = 'hello'
+io.write('-----------------------------------------------------------sec 1 \n')
+
+io.write('Enter a text : text')
+str = 'text' -- io.read()
+io.write('\n' .. a .. ' salam ' .. str)
+
+io.write('\n\n')
+io.write('Enter a number                    : 456 \n')
+local num = 456 -- io.read()
+
+steps = math.floor(num / (2*math.pi))
+sync = steps * (2*math.pi)
+
+remain = num - sync
+io.write('equal to                          : ')
+io.write(remain)
+io.write('\n')
+sinn = math.sin(num)
+sinr = math.sin(remain)
+
+
+
+io.write('1st method; sin of your number is : ')
+io.write(sinn)
+io.write('\n')
+io.write('2nd method; sin of your number is : ')
+io.write(sinr)
+io.write('\n')
+
+io.write('-----------------------------------------------------------sec 2 \n')
 
 function fib(n)
   if n < 2 then return 1 end
   return fib(n - 2) + fib(n - 1)
 end
+io.write('fib of 4 is : ')
+print(fib(4))
 
--- Closures and anonymous functions are ok:
+io.write('-----------------------------------------------------------sec 3 \n')
+
+
 function adder(x)
   -- The returned function is created when adder is
   -- called, and remembers the value of x:
@@ -94,104 +53,85 @@ a2 = adder(36)
 print(a1(16))  --> 25
 print(a2(64))  --> 100
 
--- Returns, func calls, and assignments all work
--- with lists that may be mismatched in length.
--- Unmatched receivers are nil;
--- unmatched senders are discarded.
-
-x, y, z = 1, 2, 3, 4
--- Now x = 1, y = 2, z = 3, and 4 is thrown away.
-
-function bar(a, b, c)
-  print(a, b, c)
-  return 4, 8, 15, 16, 23, 42
-end
-
-x, y = bar('zaphod')  --> prints "zaphod  nil nil"
--- Now x = 4, y = 8, values 15..42 are discarded.
-
--- Functions are first-class, may be local/global.
--- These are the same:
-function f(x) return x * x end
-f = function (x) return x * x end
-
--- And so are these:
-local function g(x) return math.sin(x) end
-local g; g  = function (x) return math.sin(x) end
--- the 'local g' decl makes g-self-references ok.
-
--- Trig funcs work in radians, by the way.
-
--- Calls with one string param don't need parens:
-print 'hello'  -- Works fine.
+print(a1)
 
 
-----------------------------------------------------
--- 3. Tables.
-----------------------------------------------------
+io.write('-----------------------------------------------------------sec 4 \n')
+-- Tabels :
 
--- Tables = Lua's only compound data structure;
---          they are associative arrays.
--- Similar to php arrays or js objects, they are
--- hash-lookup dicts that can also be used as lists.
-
--- Using tables as dictionaries / maps:
-
--- Dict literals have string keys by default:
 t = {key1 = 'value1', key2 = false}
 
 -- String keys can use js-like dot notation:
 print(t.key1)  -- Prints 'value1'.
-t.newKey = {}  -- Adds a new key/value pair.
+t.newKey = 5  -- Adds a new key/value pair.
+t.key4 = 'a key 4'
+t.ker = 'sdffsdf'
+print(t.ker)
 t.key2 = nil   -- Removes key2 from the table.
+io.write('t.newKey : ')
+print(t.newKey)
 
--- Literal notation for any (non-nil) value as key:
-u = {['@!#'] = 'qbert', [{}] = 1729, [6.28] = 'tau'}
-print(u[6.28])  -- prints "tau"
+for i = 1,10 do
+	
+	t[i] = math.sin(i)
 
--- Key matching is basically by value for numbers
--- and strings, but by identity for tables.
-a = u['@!#']  -- Now a = 'qbert'.
-b = u[{}]     -- We might expect 1729, but it's nil:
--- b = nil since the lookup fails. It fails
--- because the key we used is not the same object
--- as the one used to store the original value. So
--- strings & numbers are more portable keys.
+end
 
--- A one-table-param function call needs no parens:
+print(t)
+
+io.write('-----------------------------------------------------------sec 5 \n')
 function h(x) print(x.key1) end
 h{key1 = 'Sonmi~451'}  -- Prints 'Sonmi~451'.
+h({key1 = 'Sonmi~451'})  -- Prints 'Sonmi~451'.
+------------------------
+function h(x) print(x) end
+h'Sonmi~451'  -- Prints 'Sonmi~451'.
+io.write('-----------------------------------------------------------sec 6 \n')
 
-for key, val in pairs(u) do  -- Table iteration.
+print('inside table : ')
+for key, val in pairs(t) do  -- Table iteration.
   print(key, val)
 end
-
+io.write('-----------------------------------------------------------sec 7 \n')
+--  _G --> key word
 -- _G is a special table of all globals.
-print(_G['_G'] == _G)  -- Prints 'true'.
+print(_G .t[45])
+print(t[45])
 
--- Using tables as lists / arrays:
+io.write('-----------------------------------------------------------sec 8 \n')
+print('Table of tables (Two dimensional array) : ')
 
--- List literals implicitly set up int keys:
-v = {'value1', 'value2', 1.21, 'gigawatts'}
-for i = 1, #v do  -- #v is the size of v for lists.
-  print(v[i])  -- Indices start at 1 !! SO CRAZY!
+tt = {}
+
+jzs = 3
+for i =1,jzs do
+	tt[i] = {}
+	for j = 1,jzs do
+		tt[i][j] = i*j
+	end
 end
--- A 'list' is not a real type. v is just a table
--- with consecutive integer keys, treated as a list.
 
-----------------------------------------------------
--- 3.1 Metatables and metamethods.
-----------------------------------------------------
-
--- A table can have a metatable that gives the table
--- operator-overloadish behavior. Later we'll see
--- how metatables support js-prototypey behavior.
-
+for i =1,jzs do
+	for j = 1,jzs do
+		io.write(tt[i][j])
+		io.write('\t')
+	end
+	print()
+	print()
+	print()
+	print()
+	print()
+end
+io.write('-----------------------------------------------------------sec 9 \n')
+io.write('size of tt : ')
+print(#tt)
+io.write('\neach part : \n')
+for i = 1,#tt do
+	print(i , #tt[i])
+end
+io.write('-----------------------------------------------------------sec 10 \n')
 f1 = {a = 1, b = 2}  -- Represents the fraction a/b.
 f2 = {a = 2, b = 3}
-
--- This would fail:
--- s = f1 + f2
 
 metafraction = {}
 function metafraction.__add(f1, f2)
@@ -206,55 +146,55 @@ setmetatable(f2, metafraction)
 
 s = f1 + f2  -- call __add(f1, f2) on f1's metatable
 
--- f1, f2 have no key for their metatable, unlike
--- prototypes in js, so you must retrieve it as in
--- getmetatable(f1). The metatable is a normal table
--- with keys that Lua knows about, like __add.
+print(getmetatable(s))
 
--- But the next line fails since s has no metatable:
--- t = s + s
--- Class-like patterns given below would fix this.
+io.write('-----------------------------------------------------------sec 11 \n')
+io.write('-----------------------------------------------------------sec 11\n')
 
--- An __index on a metatable overloads dot lookups:
-defaultFavs = {animal = 'gru', food = 'donuts'}
-myFavs = {food = 'pizza'}
-setmetatable(myFavs, {__index = defaultFavs})
-eatenBy = myFavs.animal  -- works! thanks, metatable
+tb={}
+for i =1,5 do
+	tb[i] = i^2;
+	
+end
+tb['tt'] = 'efrvgefv';
 
--- Direct table lookups that fail will retry using
--- the metatable's __index value, and this recurses.
+for p1 , p2 in pairs(tb) do
+	print(p1,p2)
+end
 
--- An __index value can also be a function(tbl, key)
--- for more customized lookups.
+print(#_G)
+io.write('-----------------------------------------------------------sec 12 \n')
 
--- Values of __index,add, .. are called metamethods.
--- Full list. Here a is a table with the metamethod.
+f1 = {a = 1, b = 2}  -- Represents the fraction a/b.
+f2 = {a = 2, b = 3}
 
--- __add(a, b)                     for a + b
--- __sub(a, b)                     for a - b
--- __mul(a, b)                     for a * b
--- __div(a, b)                     for a / b
--- __mod(a, b)                     for a % b
--- __pow(a, b)                     for a ^ b
--- __unm(a)                        for -a
--- __concat(a, b)                  for a .. b
--- __len(a)                        for #a
--- __eq(a, b)                      for a == b
--- __lt(a, b)                      for a < b
--- __le(a, b)                      for a <= b
--- __index(a, b)  <fn or a table>  for a.b
--- __newindex(a, b, c)             for a.b = c
--- __call(a, ...)                  for a(...)
+-- This would fail:
+-- s = f1 + f2
 
-----------------------------------------------------
--- 3.2 Class-like tables and inheritance.
-----------------------------------------------------
+metafraction = {}
+function metafraction.__add(f11, f2)
+  sum = {}
+  sum.b = f11.b * f2.b
+  sum.a = f11.a * f2.b + f2.a * f11.b
+  return sum
+end
 
--- Classes aren't built in; there are different ways
--- to make them using tables and metatables.
+first_Argument_Of_f1=setmetatable(f1, metafraction)
+					 setmetatable(f2, metafraction)
+io.write('first Argument Of f1 : ')
+print('a = ' .. first_Argument_Of_f1.a .. ' and b = ' .. first_Argument_Of_f1.b)
 
--- Explanation for this example is below it.
-
+s = f1 + f2  -- call __add(f1, f2) on f1's metatable
+setmetatable(s, metafraction)
+-- print(s.a)
+-- print(s.b)
+t = s + s
+print(t.a)
+print(t.b)
+--ss = getmetatable(s)
+--assert(getmetatable(s) == metafraction)
+print(getmetatable(s)== metafraction)
+io.write('-----------------------------------------------------------sec 13 \n')
 Dog = {}                                   -- 1.
 
 function Dog:new()                         -- 2.
@@ -270,25 +210,7 @@ end
 mrDog = Dog:new()                          -- 7.
 mrDog:makeSound()  -- 'I say woof'         -- 8.
 
--- 1. Dog acts like a class; it's really a table.
--- 2. function tablename:fn(...) is the same as
---    function tablename.fn(self, ...)
---    The : just adds a first arg called self.
---    Read 7 & 8 below for how self gets its value.
--- 3. newObj will be an instance of class Dog.
--- 4. self = the class being instantiated. Often
---    self = Dog, but inheritance can change it.
---    newObj gets self's functions when we set both
---    newObj's metatable and self's __index to self.
--- 5. Reminder: setmetatable returns its first arg.
--- 6. The : works as in 2, but this time we expect
---    self to be an instance instead of a class.
--- 7. Same as Dog.new(Dog), so self = Dog in new().
--- 8. Same as mrDog.makeSound(mrDog); self = mrDog.
-
-----------------------------------------------------
-
--- Inheritance example:
+-----------------------------------------------------
 
 LoudDog = Dog:new()                           -- 1.
 
@@ -299,119 +221,67 @@ end
 
 seymour = LoudDog:new()                       -- 3.
 seymour:makeSound()  -- 'woof woof woof'      -- 4.
+--------------------------------------------------------------
+--------------------------------------------------------------
 
--- 1. LoudDog gets Dog's methods and variables.
--- 2. self has a 'sound' key from new(), see 3.
--- 3. Same as LoudDog.new(LoudDog), and converted to
---    Dog.new(LoudDog) as LoudDog has no 'new' key,
---    but does have __index = Dog on its metatable.
---    Result: seymour's metatable is LoudDog, and
---    LoudDog.__index = LoudDog. So seymour.key will
---    = seymour.key, LoudDog.key, Dog.key, whichever
---    table is the first with the given key.
--- 4. The 'makeSound' key is found in LoudDog; this
---    is the same as LoudDog.makeSound(seymour).
+Dog = {}                                   -- 1.
 
--- If needed, a subclass's new() is like the base's:
-function LoudDog:new()
-  newObj = {}
-  -- set up newObj
-  self.__index = self
-  return setmetatable(newObj, self)
+function Dog.new(yyyy)                         -- 2.
+  newObj = {sound = 'woof'}                -- 3.
+  yyyy.__index = yyyy                      -- 4.
+  setmetatable(newObj, yyyy)
+  return newObj        -- 5.
 end
 
-----------------------------------------------------
--- 4. Modules.
-----------------------------------------------------
-
-
---[[ I'm commenting out this section so the rest of
---   this script remains runnable.
-
--- Suppose the file mod.lua looks like this:
-local M = {}
-
-local function sayMyName()
-  print('Hrunkner')
+function Dog.makeSound(self)                   -- 6.
+  print('I say ' .. self.sound)
 end
 
-function M.sayHello()
-  print('Why hello there')
-  sayMyName()
+mrDog = Dog.new(Dog)                          -- 7.
+mrDog.makeSound(mrDog)  -- 'I say woof'         -- 8.
+
+
+io.write('-----------------------------------------------------------sec 14 \n')
+
+-- local and global variables:
+-- [[
+a = 2 -- io.read()
+a = math.sqrt(a)
+a=a^2
+if a<2 then
+	print('a is less than 2')
+elseif a >= 1.99999999 and a<=2.000000001 then
+	print("a is 2")
+	local pps = 33;
+else
+	print("a bigger than 2")
 end
-
-return M
-
--- Another file can use mod.lua's functionality:
-local mod = require('mod')  -- Run the file mod.lua.
-
--- require is the standard way to include modules.
--- require acts like:     (if not cached; see below)
-local mod = (function ()
-  <contents of mod.lua>
-end)()
--- It's like mod.lua is a function body, so that
--- locals inside mod.lua are invisible outside it.
-
--- This works because mod here = M in mod.lua:
-mod.sayHello()  -- Says hello to Hrunkner.
-
--- This is wrong; sayMyName only exists in mod.lua:
-mod.sayMyName()  -- error
-
--- require's return values are cached so a file is
--- run at most once, even when require'd many times.
-
--- Suppose mod2.lua contains "print('Hi!')".
-local a = require('mod2')  -- Prints Hi!
-local b = require('mod2')  -- Doesn't print; a=b.
-
--- dofile is like require without caching:
-dofile('mod2.lua')  --> Hi!
-dofile('mod2.lua')  --> Hi! (runs it again)
-
--- loadfile loads a lua file but doesn't run it yet.
-f = loadfile('mod2.lua')  -- Call f() to run it.
-
--- loadstring is loadfile for strings.
-g = loadstring('print(343)')  -- Returns a function.
-g()  -- Prints out 343; nothing printed before now.
-
+print(pps)
 --]]
+io.write('-----------------------------------------------------------sec 15 \n')
 
-----------------------------------------------------
--- 5. References.
-----------------------------------------------------
+if 0 then
+	print("0 is true")
+else
+	print("0 is not true")
+end
+----------------------------
+if nil then
+	print("nil is true")
+else
+	print("nil is not true")
+end
+----------------------------
+if 'sdfvf' then
+	print("text is true")
+else
+	print("text is not true")
+end
+----------------------------
+ans = aBoolValue and 'yes' or 'no'
+print(ans)
 
---[[
-
-I was excited to learn Lua so I could make games
-with the L?ve 2D game engine. That's the why.
-
-I started with BlackBulletIV's Lua for programmers.
-Next I read the official Programming in Lua book.
-That's the how.
-
-It might be helpful to check out the Lua short
-reference on lua-users.org.
-
-The main topics not covered are standard libraries:
- * string library
- * table library
- * math library
- * io library
- * os library
-
-By the way, this entire file is valid Lua; save it
-as learn.lua and run it with "lua learn.lua" !
-
-This was first written for tylerneylon.com. It's
-also available as a github gist. Tutorials for other
-languages, in the same style as this one, are here:
-
-http://learnxinyminutes.com/
-
-Have fun with Lua!
-
---]]
-
+io.write('-----------------------------------------------------------sec 16 \n')
+for key, val in pairs(_G) do  -- Table iteration.
+  print(key,'->', val)
+end
